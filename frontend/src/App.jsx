@@ -61,9 +61,10 @@ export default function App() {
 
   return (
     <>
+    <div className="mx-4 md:mx-0">
       <h1 className="text-center mt-16 text-2xl font-bold">MediBot</h1>
 
-      <div className="max-w-md h-[70vh] m-auto mt-4 bg-indigo-200 rounded-lg px-4 py-6 shadow-lg flex flex-col">
+      <div className="max-w-md h-[70vh] m-auto mt-4 bg-indigo-200 rounded-lg px-4 py-6 shadow-lg flex flex-col ">
         {!connected && (
           <div className="text-red-500 mb-2 text-center">
             Connecting to server...
@@ -109,6 +110,7 @@ export default function App() {
             Send
           </button>
         </div>
+      </div>
       </div>
     </>
   );
