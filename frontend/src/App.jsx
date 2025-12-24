@@ -8,7 +8,7 @@ function App() {
   const chatEndRef = useRef(null);
 
   useEffect(() => {
-    const socket = new WebSocket("wss://medibot-production-4d00.up.railway.app/chat");
+    const socket = new WebSocket("wss://medibot-production-4d00.up.railway.app/chat")
     socketRef.current = socket;
 
     socket.onopen = () => console.log("Connected to server");
