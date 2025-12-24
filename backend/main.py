@@ -3,8 +3,11 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
+
+
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
@@ -63,6 +66,14 @@ prompt = ChatPromptTemplate.from_template(template)
 chain = prompt | llm
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://medi-bot-7pwo.vercel.app/"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.websocket("/chat")
 async def chat(websocket: WebSocket):
