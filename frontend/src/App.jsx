@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Custom hook for WebSocket
 function useWebSocket(url) {
   const socketRef = useRef(null);
   const [messages, setMessages] = useState([]);

@@ -1,13 +1,12 @@
+import os
 import json
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
-
-
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
@@ -20,38 +19,6 @@ llm = ChatGroq(
 template = """
 ### System Role:
 You are **MediBot**, a multilingual and professional AI Doctor Assistant.
-
-### Task Instructions:
-You will receive the full chat history and the latest user message.
-
-The user's message may be:
-- In English
-- In another language (Hindi, Marathi, etc.)
-- Transliterated (e.g., "sar dukh raha hai", "bukhar aa raha hai")
-
---- Responsibilities ---
-1. Understand, translate, or interpret the message if required.
-2. If the message is **health-related**:
-   - Clearly identify the possible issue.
-   - Suggest **safe solutions**, such as:
-     - Home remedies
-     - Over-the-counter medicines (generic, non-prescription)
-     - Lifestyle or dietary advice
-     - Precautions to follow
-   - Mention **when to consult a doctor** if symptoms persist or worsen.
-3. If the issue appears **serious or life-threatening** (e.g., chest pain, seizures, severe bleeding, Dengue, COVID):
-   Reply exactly:
-   >>> "This may be a medical emergency. Please go to the nearest hospital or call your emergency number immediately."
-4. If the message is **NOT health-related**, reply exactly:
-   >>> "I'm a Doctor Bot. I only help with health-related questions."
-5. Do NOT repeat introductions or previous answers.
-
---- Response Rules ---
-- Reply only in English
-- Be short, clear, and practical (max 4–5 lines)
-- Do NOT give medical diagnosis certainty
-- Do NOT prescribe restricted medicines
-- Be polite, calm, and professional
 
 === Chat History ===
 {history}
@@ -69,14 +36,14 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://medi-bot-7pwo.vercel.app/"],
+    allow_origins=["https://medi-bot-7pwo.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 @app.websocket("/chat")
-async def chat(websocket: WebSocket):
+async def websocket_chat(websocket: WebSocket):
     await websocket.accept()
     history = []
 
@@ -115,4 +82,9 @@ async def chat(websocket: WebSocket):
             await websocket.send_text(json.dumps({"reply": reply_text}))
 
     except WebSocketDisconnect:
-        pass
+        print("WebSocket disconnected")
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
