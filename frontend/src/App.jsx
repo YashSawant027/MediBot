@@ -94,14 +94,14 @@ export default function App() {
         <div className="flex gap-3">
           <input
             type="text"
-            className="bg-white rounded px-3 flex-1"
+            className="bg-white rounded px-3 flex-1 w-[70%]"
             placeholder="Ask anything"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage(input) && setInput("")}
           />
           <button
-            className="bg-blue-400 px-4 py-2 rounded text-white"
+            className="bg-blue-400 px-1 py-2 w-[20%] rounded text-white"
             onClick={() => {
               sendMessage(input);
               setInput("");
