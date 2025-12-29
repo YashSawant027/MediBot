@@ -57,6 +57,7 @@ export default function App() {
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setInput("")
   }, [messages]);
 
   return (
