@@ -52,7 +52,7 @@ export default function App() {
   const chatEndRef = useRef(null);
 
   const { messages, sendMessage, connected } = useWebSocket(
-    "wss://medibot-production-4d00.up.railway.app/chat"
+    "wss://medibot-eyzq.onrender.com/chat"
   );
 
   useEffect(() => {
